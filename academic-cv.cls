@@ -52,6 +52,7 @@
 \RequirePackage{etoolbox}
 % Needed to change line spacing in specific environment
 \RequirePackage{setspace}
+\RequirePackage{xspace}
 % Needed to manage fonts
 \RequirePackage[quiet]{fontspec}
 % To support LaTeX quoting style
@@ -75,7 +76,13 @@
   pdfkeywords={}
 }
 % Needed for hanging indents
-\usepackage{hanging}
+\RequirePackage{hanging}
+% Needed for typesetting units
+\RequirePackage[separate-uncertainty]{siunitx}
+\DeclareSIUnit{\electronvolt}{e\kern-0.04em\relax{}V}
+\DeclareSIUnit{\eV}{\electronvolt}
+\DeclareSIUnit{\barn}{b}
+\newcommand*{\evolt}{e\kern-0.04em\relax{}V\xspace}
 
 %-------------------------------------------------------------------------------
 %                Configuration for directory locations
@@ -124,16 +131,42 @@
 \colorlet{text}{black}
 \colorlet{graytext}{black}
 \colorlet{lighttext}{black}
+% Awesome colors
+\definecolor{awesome-emerald}{HTML}{00A388}
+%\definecolor{awesome-skyblue-light}{HTML}{0395DE}
+\definecolor{awesome-skyblue-light}{HTML}{56abfa}
+%\definecolor{awesome-skyblue}{HTML}{377bb9}
+\definecolor{awesome-skyblue}{HTML}{2283dc}
+\definecolor{awesome-red}{HTML}{DC3522}
+\definecolor{awesome-pink}{HTML}{EF4089}
+\definecolor{awesome-orange}{HTML}{FF6138}
+\definecolor{awesome-nephritis}{HTML}{27AE60}
+\definecolor{awesome-concrete}{HTML}{95A5A6}
+\definecolor{awesome-darknight}{HTML}{131A28}
+\colorlet{awesome}{awesome-skyblue}
+\colorlet{awesome-light}{awesome-skyblue-light}
 
 % Boolean value to switch section color highlighting
 \newbool{acvSectionColorHighlight}
-\setbool{acvSectionColorHighlight}{false}
+% \setbool{acvSectionColorHighlight}{false}
+\setbool{acvSectionColorHighlight}{true}
 
 % Awesome section color
-\def\@sectioncolor#1#2#3{%
-  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1#2#3}}{#1#2#3}%
+% \def\@sectioncolor#1#2#3{%
+%   \ifbool{acvSectionColorHighlight}{{\color{awesome}#1#2#3}}{#1#2#3}%
+% }
+\def\@sectioncolor{%
+  \ifbool{acvSectionColorHighlight}{\color{awesome}}{}%
 }
-
+\def\@subsectioncolor{%
+  \ifbool{acvSectionColorHighlight}{\color{awesome-light}}{}%
+}
+\def\@titlenamecolor{%
+  \ifbool{acvSectionColorHighlight}{\color{awesome}}{}%
+}
+\def\@iconcolor{%
+  \ifbool{acvSectionColorHighlight}{\color{awesome}}{}%
+}
 
 %-------------------------------------------------------------------------------
 %                Configuration for fonts
@@ -167,15 +200,15 @@
 % Configure styles for each CV elements
 % For fundamental structures
 % here, you can modify colors, sizes, and fonts for each type of text
-\newcommand*{\headerfirstnamestyle}[1]{{\fontsize{28pt}{1em}\headerfontlight\color{graytext} #1}}
-\newcommand*{\headerlastnamestyle}[1]{{\fontsize{28pt}{1em}\headerfont\bfseries\color{text} #1}}
+\newcommand*{\headerfirstnamestyle}[1]{{\fontsize{28pt}{1em}\headerfont\color{graytext}\@titlenamecolor #1}}
+\newcommand*{\headerlastnamestyle}[1]{{\fontsize{28pt}{1em}\headerfont\bfseries\color{text}\@titlenamecolor #1}}
 \newcommand*{\headerpositionstyle}[1]{{\fontsize{10pt}{1em}\bodyfont\scshape\color{darktext} #1}}
 \newcommand*{\headeraddressstyle}[1]{{\fontsize{9pt}{1em}\headerfont\itshape\color{lighttext} #1}}
 \newcommand*{\headersocialstyle}[1]{{\fontsize{8pt}{1em}\headerfont\color{text} #1}}
 \newcommand*{\headerquotestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\itshape\color{darktext} #1}}
 \newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
 \newcommand*{\sectionstyle}[1]{{\fontsize{14pt}{1em}\bodyfont\color{text}\@sectioncolor #1}}
-\newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
+\newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\color{text}\@subsectioncolor #1}}
 \newcommand*{\paragraphstyle}{\fontsize{9pt}{1em}\bodyfontlight\color{text}}
 
 % For elements of entry
@@ -375,68 +408,68 @@
       \ifthenelse{\isundefined{\@mobile}}%
         {}%
         {%
-          \faMobile\acvHeaderIconSep\@mobile%
+          {\@iconcolor\faMobile}\acvHeaderIconSep\@mobile%
           \setbool{isstart}{false}%
         }%
       \ifthenelse{\isundefined{\@email}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{mailto:\@email}{\faEnvelope\acvHeaderIconSep\@email}%
+          \href{mailto:\@email}{{\@iconcolor\faEnvelope}\acvHeaderIconSep\@email}%
         }%
       \ifthenelse{\isundefined{\@homepage}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{http://\@homepage}{\faHome\acvHeaderIconSep\@homepage}%
+          \href{http://\@homepage}{{\@iconcolor\faHome}\acvHeaderIconSep\@homepage}%
         }%
       \ifthenelse{\isundefined{\@github}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://github.com/\@github}{\faGithubSquare\acvHeaderIconSep\@github}%
+          \href{https://github.com/\@github}{{\@iconcolor\faGithubSquare}\acvHeaderIconSep\@github}%
         }%
       \ifthenelse{\isundefined{\@gitlab}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://gitlab.cern.ch/\@gitlab}{\faGitlab\acvHeaderIconSep\@gitlab}%
+          \href{https://gitlab.cern.ch/\@gitlab}{{\@iconcolor\faGitlab}\acvHeaderIconSep\@gitlab}%
         }%
       \ifthenelse{\isundefined{\@stackoverflowid}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://stackoverflow.com/users/\@stackoverflowid}{\faStackOverflow\acvHeaderIconSep\@stackoverflowname}%
+          \href{https://stackoverflow.com/users/\@stackoverflowid}{{\@iconcolor\faStackOverflow}\acvHeaderIconSep\@stackoverflowname}%
         }%
       \ifthenelse{\isundefined{\@linkedin}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://www.linkedin.com/in/\@linkedin}{\faLinkedinSquare\acvHeaderIconSep\@linkedin}%
+          \href{https://www.linkedin.com/in/\@linkedin}{{\@iconcolor\faLinkedinSquare}\acvHeaderIconSep\@linkedin}%
         }%
       \ifthenelse{\isundefined{\@twitter}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://twitter.com/\@twitter}{\faTwitter\acvHeaderIconSep\@twitter}%
+          \href{https://twitter.com/\@twitter}{{\@iconcolor\faTwitter}\acvHeaderIconSep\@twitter}%
         }%
       \ifthenelse{\isundefined{\@skype}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \faSkype\acvHeaderIconSep\@skype%
+          {\@iconcolor\faSkype}\acvHeaderIconSep\@skype%
         }%
       \ifthenelse{\isundefined{\@reddit}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://www.reddit.com/user/\@reddit}{\faReddit\acvHeaderIconSep\@reddit}%
+          \href{https://www.reddit.com/user/\@reddit}{{\@iconcolor\faReddit}\acvHeaderIconSep\@reddit}%
         }%
       \ifthenelse{\isundefined{\@xing}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://www.xing.com/profile/\@xing}{\faXingSquare\acvHeaderIconSep\@xing}
+          \href{https://www.xing.com/profile/\@xing}{{\@iconcolor\faXingSquare}\acvHeaderIconSep\@xing}
         }%
       \ifthenelse{\isundefined{\@extrainfo}}%
         {}%
@@ -469,7 +502,7 @@
   \vspace{\acvSectionTopSkip}
   \sectionstyle{#1} 
   \phantomsection
-  \color{gray}\vhrulefill{0.9pt}
+  {\ifbool{acvSectionColorHighlight}{\color{awesome}}{\color{gray}}\hspace{-0.15em}\vhrulefill{0.5pt}}
 }
 
 % Define a subsection for CV
@@ -506,12 +539,15 @@
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
-    \ifempty{#2#3}
-      {\entrypositionstyle{#1} & \entrydatestyle{#4} \\}
-      {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
-      \entrypositionstyle{#1} & \entrydatestyle{#4} \\}
-    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}
+  \ifempty{#2#3}
+    {\entrypositionstyle{#1} & \entrydatestyle{#4}  }
+    {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
+    \entrypositionstyle{#1} & \entrydatestyle{#4}   }
+  \ifempty{#5}{}{%
+    \\
+    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}}%
   \end{tabular*}%
+  \ifempty{#5}{\vspace{0.2\baselineskip}}{}
 }
 
 % Define an environment for cvsubentry
