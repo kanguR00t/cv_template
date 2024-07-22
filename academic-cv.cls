@@ -77,6 +77,8 @@
 }
 % Needed for hanging indents
 \RequirePackage{hanging}
+% Needed for tabs
+\RequirePackage{tabto}
 % Needed for typesetting units
 \RequirePackage[separate-uncertainty]{siunitx}
 \DeclareSIUnit{\electronvolt}{e\kern-0.04em\relax{}V}
@@ -354,9 +356,9 @@
 %                Commands for utilities
 %-------------------------------------------------------------------------------
 % Use to align an element of tabular table
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 
 % Use to draw horizontal line with specific thickness
 \def\vhrulefill#1{\leavevmode\leaders\hrule\@height#1\hfill \kern\z@}
@@ -594,7 +596,7 @@
   \begin{center}
     \setlength\tabcolsep{0pt}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{1.7cm} L{\textwidth - 2.5cm - #1} R{#1}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{2.2cm} L{\textwidth - 3.0cm - #1} R{#1}}
 }{%
     \end{tabular*}
   \end{center}
@@ -638,8 +640,8 @@
 % Define a line of cvpub
 % Usage: \cvpub{<ciation>}
 \newcommand*{\cvpub}[1]{%
-	\leftskip 0.7cm
-    \parindent -0.7cm
+	\leftskip 0.3cm
+    \parindent -0.3cm
     \pubstyle{#1}
 }
 
