@@ -640,8 +640,8 @@
 % Define a line of cvpub
 % Usage: \cvpub{<ciation>}
 \newcommand*{\cvpub}[1]{%
-	\leftskip 0.7cm
-    \parindent -0.7cm
+	\leftskip 0.3cm
+    \parindent -0.3cm
     \pubstyle{#1}
 }
 
