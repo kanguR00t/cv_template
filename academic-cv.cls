@@ -588,6 +588,18 @@
   \end{center}
 }
 
+\newenvironment{cvhonorsleft}[1][2cm]{%
+  \vspace{\acvSectionContentTopSkip}
+  \vspace{-2mm}
+  \begin{center}
+    \setlength\tabcolsep{0pt}
+    \setlength{\extrarowheight}{0pt}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{1.7cm} L{\textwidth - 2.5cm - #1} R{#1}}
+}{%
+    \end{tabular*}
+  \end{center}
+}
+
 % Define a line of cv information(honor, award or something else)
 % Usage: \cvhonor{<position>}{<title>}{<location>}{<date>}
 \newcommand*{\cvhonor}[4]{%
