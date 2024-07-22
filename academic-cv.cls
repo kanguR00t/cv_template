@@ -534,20 +534,20 @@
 
 % Define an entry of cv information
 % Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}
-\newcommand*{\cventry}[5]{%
+\newcommand*{\cventry}[6][4.5cm]{%
   \vspace{-2.0mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
-  \ifempty{#2#3}
-    {\entrypositionstyle{#1} & \entrydatestyle{#4}  }
-    {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
-    \entrypositionstyle{#1} & \entrydatestyle{#4}   }
-  \ifempty{#5}{}{%
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - #1} R{#1}}
+  \ifempty{#3#4}
+    {\entrypositionstyle{#2} & \entrydatestyle{#5}  }
+    {\entrytitlestyle{#3} & \entrylocationstyle{#4} \\
+    \entrypositionstyle{#2} & \entrydatestyle{#5}   }
+  \ifempty{#6}{}{%
     \\
-    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}}%
+    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#6}}}%
   \end{tabular*}%
-  \ifempty{#5}{\vspace{0.2\baselineskip}}{}
+  \ifempty{#6}{\vspace{0.2\baselineskip}}{}
 }
 
 % Define an environment for cvsubentry
@@ -576,13 +576,13 @@
 }
 
 % Define an environment for cvhonor
-\newenvironment{cvhonors}{%
+\newenvironment{cvhonors}[1][2cm]{%
   \vspace{\acvSectionContentTopSkip}
   \vspace{-2mm}
   \begin{center}
     \setlength\tabcolsep{0pt}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} R{1.7cm} L{\textwidth - 4.5cm} R{2cm}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} R{1.7cm} L{\textwidth - 2.5cm - #1} R{#1}}
 }{%
     \end{tabular*}
   \end{center}
