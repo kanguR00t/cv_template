@@ -77,6 +77,8 @@
 }
 % Needed for hanging indents
 \RequirePackage{hanging}
+% Needed for tabs
+\RequirePackage{tabto}
 % Needed for typesetting units
 \RequirePackage[separate-uncertainty]{siunitx}
 \DeclareSIUnit{\electronvolt}{e\kern-0.04em\relax{}V}
