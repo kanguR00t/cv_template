@@ -61,7 +61,7 @@
 \RequirePackage{unicode-math}
 % Needed to use icons from font-awesome
 % (https://github.com/posquit0/latex-fontawesome)
-\RequirePackage{fontawesome}
+\RequirePackage{fontawesome5}
 \RequirePackage[default,opentype]{sourcesanspro}
 % Needed for the photo ID
 \RequirePackage[skins]{tcolorbox}
@@ -301,6 +301,10 @@
 % Usage: \gitlab{<gitlab-nick>}
 \newcommand*{\gitlab}[1]{\def\@gitlab{#1}}
 
+% Defines writer's orcid (optional)
+% Usage: \orcid{<orcid-num>}
+\newcommand*{\orcid}[1]{\def\@orcid{#1}}
+
 % Defines writer's stackoverflow profile (optional)
 % Usage: \stackoverflow{<so userid>}{<so username>}
 %   e.g.https://stackoverflow.com/users/123456/sam-smith
@@ -356,9 +360,12 @@
 %                Commands for utilities
 %-------------------------------------------------------------------------------
 % Use to align an element of tabular table
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+% \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+% \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+% \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash\hspace{0pt}}p{#1}}
 
 % Use to draw horizontal line with specific thickness
 \def\vhrulefill#1{\leavevmode\leaders\hrule\@height#1\hfill \kern\z@}
@@ -436,6 +443,12 @@
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
           \href{https://gitlab.cern.ch/\@gitlab}{{\@iconcolor\faGitlab}\acvHeaderIconSep\@gitlab}%
+        }%
+      \ifthenelse{\isundefined{\@orcid}}%
+        {}%
+        {%
+          \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+          \href{https://orcid.org/\@orcid}{{\@iconcolor\faOrcid}\acvHeaderIconSep\@orcid}%
         }%
       \ifthenelse{\isundefined{\@stackoverflowid}}%
         {}%
@@ -541,15 +554,18 @@
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - #1} R{#1}}
-  \ifempty{#3#4}
-    {\entrypositionstyle{#2} & \entrydatestyle{#5}  }
-    {\entrytitlestyle{#3} & \entrylocationstyle{#4} \\
-    \entrypositionstyle{#2} & \entrydatestyle{#5}   }
+  \ifempty{#3#4}{%
+    \entrypositionstyle{#2} & \entrydatestyle{#5}%
+  }{%
+    \entrytitlestyle{#3} & \entrylocationstyle{#4} \\%
+    \entrypositionstyle{#2} & \entrydatestyle{#5}%
+  }
   \ifempty{#6}{}{%
-    \\
-    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#6}}}%
+    \\%
+    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#6}} \\}
   \end{tabular*}%
   \ifempty{#6}{\vspace{0.2\baselineskip}}{}
+  % \vspace{0.2\baselineskip}%
 }
 
 % Define an environment for cvsubentry
@@ -580,7 +596,7 @@
 % Define an environment for cvhonor
 \newenvironment{cvhonors}[1][2cm]{%
   \vspace{\acvSectionContentTopSkip}
-  \vspace{-2mm}
+  \vspace{-2.0mm}
   \begin{center}
     \setlength\tabcolsep{0pt}
     \setlength{\extrarowheight}{0pt}
@@ -603,9 +619,18 @@
 }
 
 % Define a line of cv information(honor, award or something else)
-% Usage: \cvhonor{<position>}{<title>}{<location>}{<date>}
-\newcommand*{\cvhonor}[4]{%
-  \honordatestyle{#4} & \honorpositionstyle{#1}, \honortitlestyle{#2} & \honorlocationstyle{#3} \\
+% Usage: \cvhonor{<position>}{<title>}{<location>}{<date>}{<details>}
+\newcommand*{\cvhonor}[5]{%
+  \ifempty{#2}{%
+    \honordatestyle{#4} & \honorpositionstyle{#1} & \honorlocationstyle{#3}%
+  }{%
+    \honordatestyle{#4} & \honorpositionstyle{#1}, \honortitlestyle{#2} & \honorlocationstyle{#3}%
+  }
+  \ifempty{#5}{ \\%
+    }{%
+    \\%
+    & \multicolumn{2}{L{\textwidth - 2.5cm}}{\descriptionstyle{#5}} \\%
+  }%
 }
 
 % Define an environment for cvskill
@@ -624,7 +649,7 @@
 % Define a line of cv information(skill)
 % Usage: \cvskill{<type>}{<skillset>}
 \newcommand*{\cvskill}[3]{%
-	\skilltypestyle{#1} & \skillsetstyle{#2}, \skilllocstyle{#3}\\
+  \skilltypestyle{#1} & \skillsetstyle{#2}, \skilllocstyle{#3}\\
 }
 
 % Define an environment for cvpub
