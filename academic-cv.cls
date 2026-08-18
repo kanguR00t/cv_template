@@ -299,6 +299,10 @@
 % Usage: \orcid{<orcid-num>}
 \newcommand*{\orcid}[1]{\def\@orcid{#1}}
 
+% Defines writer's orcid (optional)
+% Usage: \inspire{<inspirehep-num>}
+\newcommand*{\inspire}[2]{\def\@inspire{#1}\def\@inspireid{#2}}
+
 % Defines writer's stackoverflow profile (optional)
 % Usage: \stackoverflow{<so userid>}{<so username>}
 %   e.g.https://stackoverflow.com/users/123456/sam-smith
@@ -443,6 +447,12 @@
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
           \href{https://orcid.org/\@orcid}{{\@iconcolor\faOrcid}\acvHeaderIconSep\@orcid}%
+        }%
+      \ifthenelse{\isundefined{\@inspire}}%
+        {}%
+        {%
+          \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+          \href{https://inspirehep.net/authors/\@inspire}{{\@iconcolor\faInfoCircle}\acvHeaderIconSep\@inspireid}%
         }%
       \ifthenelse{\isundefined{\@stackoverflowid}}%
         {}%
