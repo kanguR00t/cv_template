@@ -69,12 +69,6 @@
 \RequirePackage{parskip}
 % Needed to deal hyperlink
 \RequirePackage[hidelinks,unicode]{hyperref}
-\hypersetup{%
-  pdftitle={},
-  pdfauthor={},
-  pdfsubject={},
-  pdfkeywords={}
-}
 % Needed for hanging indents
 \RequirePackage{hanging}
 % Needed for tabs
@@ -305,6 +299,10 @@
 % Usage: \orcid{<orcid-num>}
 \newcommand*{\orcid}[1]{\def\@orcid{#1}}
 
+% Defines writer's orcid (optional)
+% Usage: \inspire{<inspirehep-num>}
+\newcommand*{\inspire}[2]{\def\@inspire{#1}\def\@inspireid{#2}}
+
 % Defines writer's stackoverflow profile (optional)
 % Usage: \stackoverflow{<so userid>}{<so username>}
 %   e.g.https://stackoverflow.com/users/123456/sam-smith
@@ -449,6 +447,12 @@
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
           \href{https://orcid.org/\@orcid}{{\@iconcolor\faOrcid}\acvHeaderIconSep\@orcid}%
+        }%
+      \ifthenelse{\isundefined{\@inspire}}%
+        {}%
+        {%
+          \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
+          \href{https://inspirehep.net/authors/\@inspire}{{\@iconcolor\faInfoCircle}\acvHeaderIconSep\@inspireid}%
         }%
       \ifthenelse{\isundefined{\@stackoverflowid}}%
         {}%
@@ -612,7 +616,7 @@
   \begin{center}
     \setlength\tabcolsep{0pt}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{1.7cm} L{\textwidth - 2.5cm - #1} R{#1}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{2.2cm} L{\textwidth - 3.0cm - #1} R{#1}}
 }{%
     \end{tabular*}
   \end{center}
@@ -671,8 +675,9 @@
 }
 
 % Define an environment for cvitems(for cventry)
-\newenvironment{cvitems}{%
-  \vspace{-4.0mm}
+\newenvironment{cvitems}[1][-4.0mm]{%
+  \def\cvitemsSpace{#1}
+  \vspace{\cvitemsSpace}
   \begin{justify}
   \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
     \setlength{\parskip}{0pt}
@@ -680,5 +685,5 @@
 }{%
   \end{itemize}
   \end{justify}
-  \vspace{-4.0mm}
+  \vspace{\cvitemsSpace}
 }
